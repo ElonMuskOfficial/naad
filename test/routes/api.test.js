@@ -106,6 +106,27 @@ describe('JioSaavn-backed routes (canned upstream)', () => {
     assert.equal((await app.inject('/v1/tracks/rjkrTnma/lyrics')).statusCode, 404);
   });
 
+  it('serves synced lyrics when available from LRCLIB', async (t) => {
+    const upstream = fakeUpstream();
+    const origFetch = upstream.fetch;
+    const fetchImpl = async (input) => {
+      const url = new URL(String(input));
+      if (url.hostname === 'lrclib.net' && url.pathname === '/api/get') {
+        return new Response(JSON.stringify({ syncedLyrics: '[00:01.00]Hello', plainLyrics: 'Hello' }), {
+          headers: { 'content-type': 'application/json' },
+        });
+      }
+      return origFetch(input);
+    };
+    const app = await build(t, { fetch: fetchImpl });
+    const res = await app.inject('/v1/tracks/rjkrTnma/lyrics');
+    assert.equal(res.statusCode, 200);
+    const body = res.json();
+    assert.equal(body.source, 'lrclib');
+    assert.deepEqual(body.synced, [{ timeMs: 1000, text: 'Hello' }]);
+    assert.equal(body.plain, null);
+  });
+
   it('an unknown upstream id is a 404, not a crash', async (t) => {
     const app = await build(t);
     assert.equal((await app.inject('/v1/albums/999')).statusCode, 404);

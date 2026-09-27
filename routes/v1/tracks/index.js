@@ -25,10 +25,11 @@ const tracks = async (fastify) => {
     },
   );
 
-  /** Lyrics from LRCLIB, time-synced when available. */
+  /** Time-synced lyrics from LRCLIB. */
   fastify.get('/:id/lyrics', { schema: { params } }, async (req, reply) => {
+    const data = await fastify.lyrics.get(req.params.id);
     reply.header('cache-control', 'public, max-age=86400');
-    return fastify.lyrics.get(req.params.id);
+    return data;
   });
 };
 
