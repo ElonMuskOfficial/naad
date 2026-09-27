@@ -5,6 +5,7 @@ import { launchFixture } from '../helper.js';
 
 describe('sectionsFromLaunchData', () => {
   const sections = sectionsFromLaunchData(launchFixture);
+  const byId = new Map(sections.map((s) => [s.id, s]));
 
   it('follows the JioSaavn module order and titles', () => {
     assert.deepEqual(sections.map((s) => s.title).slice(0, 4), [
@@ -22,33 +23,57 @@ describe('sectionsFromLaunchData', () => {
     }
   });
 
-  it('gives each section the kind of its most common item type, with matching item shapes', () => {
-    const byId = new Map(sections.map((s) => [s.id, s]));
-    assert.equal(byId.get('new-trending')?.kind, 'albums');
-    assert.equal(byId.get('charts')?.kind, 'playlists');
-    assert.equal(byId.get('promo-vx-data-113')?.kind, 'tracks');
+  // Regression test for the shelf-drops-minority-kinds bug: a module mixing item types must keep
+  // every one of them, not just its most common kind.
+  it('keeps every kind a mixed module holds, instead of collapsing to the most common one', () => {
+    const trending = byId.get('new-trending');
+    const kinds = new Set(trending?.items.map((i) => i.kind));
+    assert.deepEqual(kinds, new Set(['album', 'playlist', 'track']));
+
+    const newReleases = byId.get('new-albums');
+    assert.deepEqual(
+      new Set(newReleases?.items.map((i) => i.kind)),
+      new Set(['track', 'album']),
+    );
+  });
+
+  it('gives each item shape matching its own tagged kind', () => {
     for (const s of sections) {
       assert.ok(s.items.length > 0);
-      for (const item of s.items) assert.ok(item.id);
-      if (s.kind === 'tracks') assert.ok('durationMs' in s.items[0]);
-      if (s.kind === 'albums') assert.ok('albumType' in s.items[0]);
-      if (s.kind === 'playlists') assert.ok('trackCount' in s.items[0]);
+      for (const entry of s.items) {
+        assert.ok(entry.item.id);
+        if (entry.kind === 'track') assert.ok('durationMs' in entry.item);
+        if (entry.kind === 'album') assert.ok('albumType' in entry.item);
+        if (entry.kind === 'playlist') assert.ok('trackCount' in entry.item);
+        if (entry.kind === 'artist') assert.ok('name' in entry.item);
+      }
     }
   });
 
+  it('preserves JioSaavn\'s own item order within a mixed section', () => {
+    const raw = launchFixture.new_trending;
+    const KIND_OF_TYPE = { song: 'track', album: 'album', playlist: 'playlist', artist: 'artist' };
+    const expectedIds = raw.filter((r) => r.type && KIND_OF_TYPE[r.type]).map((r) => r.id);
+    assert.deepEqual(
+      byId.get('new-trending')?.items.map((i) => i.item.id),
+      expectedIds,
+    );
+  });
+
   it('uses native JioSaavn ids and decodes HTML entities in titles', () => {
-    const tracks = sections.find((s) => s.kind === 'tracks');
-    assert.doesNotMatch(tracks?.items[0]?.id ?? '', /^trk_/);
+    const tracks = sections.flatMap((s) => s.items).filter((i) => i.kind === 'track');
+    assert.ok(tracks.length > 0);
+    assert.doesNotMatch(tracks[0].item.id, /^trk_/);
     for (const s of sections)
-      for (const item of s.items) {
-        const label = 'title' in item ? item.title : item.name;
+      for (const entry of s.items) {
+        const label = 'title' in entry.item ? entry.item.title : entry.item.name;
         assert.doesNotMatch(label, /&quot;|&amp;/);
       }
   });
 
   it('fills album artists from the homepage artists list', () => {
-    const albums = sections.find((s) => s.kind === 'albums');
-    assert.ok(albums?.kind === 'albums' && albums.items.some((a) => a.artists.length > 0));
+    const albums = sections.flatMap((s) => s.items).filter((i) => i.kind === 'album');
+    assert.ok(albums.some((a) => a.item.artists.length > 0));
   });
 
   it('never contains personalised sections', () => {
