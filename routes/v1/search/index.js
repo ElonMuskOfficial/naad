@@ -1,4 +1,7 @@
-const TYPES = ['track', 'album', 'artist', 'playlist'];
+const DEFAULT_TYPES = ['track', 'album', 'artist', 'playlist'];
+// `show` (JioSaavn's podcasts) is opt-in only: an unfiltered search keeps its existing four types, so
+// this doesn't change what any existing caller gets back.
+const ALL_TYPES = [...DEFAULT_TYPES, 'show'];
 
 const search = async (fastify) => {
   fastify.get(
@@ -19,9 +22,11 @@ const search = async (fastify) => {
     },
     async (req) => {
       const { q, limit, offset } = req.query;
-      const types = req.query.types ? req.query.types.split(',').map((t) => t.trim()) : TYPES;
-      if (!types.every((t) => TYPES.includes(t))) {
-        throw fastify.httpErrors.badRequest(`types must be a comma separated list of: ${TYPES.join(', ')}`);
+      const types = req.query.types ? req.query.types.split(',').map((t) => t.trim()) : DEFAULT_TYPES;
+      if (!types.every((t) => ALL_TYPES.includes(t))) {
+        throw fastify.httpErrors.badRequest(
+          `types must be a comma separated list of: ${ALL_TYPES.join(', ')}`,
+        );
       }
       return fastify.catalog.search(q, types, limit, offset);
     },

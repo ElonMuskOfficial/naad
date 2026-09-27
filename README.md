@@ -27,7 +27,7 @@ Everything is `GET` unless noted.
 | Endpoint | Returns |
 | --- | --- |
 | `/v1/home` | The JioSaavn homepage as `{ sections }` (same modules, order and titles) |
-| `/v1/search?q=&types=track,album,artist,playlist&limit=&offset=` | Results per type plus a `topResult` |
+| `/v1/search?q=&types=track,album,artist,playlist&limit=&offset=` | Results per type plus a `topResult`. Add `show` to `types` (opt-in, never the `topResult`) to search JioSaavn's podcasts too |
 | `/v1/tracks/{id}` | A track |
 | `/v1/albums/{id}` · `/v1/artists/{id}` · `/v1/playlists/{id}?limit=` | An album / artist page / playlist, with tracks |
 | `/v1/tracks/{id}/audio?quality=max\|320\|160\|96` | `{ url, bitrateKbps, codec, mimeType, durationMs }`: a static CDN URL, usable as `<audio src>` |

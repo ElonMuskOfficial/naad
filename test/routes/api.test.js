@@ -57,6 +57,31 @@ describe('JioSaavn-backed routes (canned upstream)', () => {
     assert.equal(searches(), before);
   });
 
+  it('search for shows (podcasts) is opt-in and never the top result', async (t) => {
+    const app = await build(t);
+
+    // Unfiltered search keeps its existing four types: no shows, and no upstream call for them.
+    const plain = await app.inject('/v1/search?q=kesariya');
+    assert.equal(plain.statusCode, 200);
+    assert.deepEqual(plain.json().shows, []);
+
+    const res = await app.inject('/v1/search?q=talking+music&types=track,show&limit=3');
+    assert.equal(res.statusCode, 200);
+    const body = res.json();
+    assert.equal(body.shows[0].title, 'Talking Music');
+    assert.equal(body.shows[0].token, 'PjReFP-Sguk_');
+    assert.ok(body.shows[0].artists.some((a) => a.name === 'Kirthi Shetty'));
+    // A track fixture is present too, so shows must not have won topResult over it.
+    assert.equal(body.topResult.type, 'track');
+  });
+
+  it('an unknown search type is a 400, `show` included in the message', async (t) => {
+    const app = await build(t);
+    const res = await app.inject('/v1/search?q=x&types=song');
+    assert.equal(res.statusCode, 400);
+    assert.match(res.json().message, /show/);
+  });
+
   it('home mirrors the JioSaavn homepage', async (t) => {
     const app = await build(t);
     const res = await app.inject('/v1/home');

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { decryptMedia, mediaVariant } from '../../lib/jiosaavn/audio.js';
 import { episodeView, images, seasonView, showView, stationView, trackView } from '../../lib/jiosaavn/map.js';
-import { browseFixture, searchFixture, showFixture } from '../helper.js';
+import { browseFixture, searchFixture, showFixture, showSearchFixture } from '../helper.js';
 
 describe('JioSaavn mapping', () => {
   const raw = searchFixture.results[0];
@@ -64,6 +64,19 @@ describe('showView', () => {
     assert.equal(s.id, '62');
     assert.equal(s.totalEpisodes, 41);
     assert.match(s.description ?? '', /Kirthi Shetty/);
+    assert.deepEqual(
+      s.artists.map((a) => a.name),
+      ['Kirthi Shetty'],
+    );
+  });
+
+  it('maps a search.getMoreResults hit — flat artists, image_file_url, latest_season_sequence', () => {
+    const s = showView(showSearchFixture.results[0]);
+    assert.equal(s.id, '62');
+    assert.equal(s.token, 'PjReFP-Sguk_');
+    assert.equal(s.title, 'Talking Music');
+    assert.equal(s.seasonNumber, 3);
+    assert.ok(s.images.length > 0);
     assert.deepEqual(
       s.artists.map((a) => a.name),
       ['Kirthi Shetty'],

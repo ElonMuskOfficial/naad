@@ -1,0 +1,36 @@
+{
+  "total": 24,
+  "start": 1,
+  "results": [
+    {
+      "id": "62",
+      "type": "show",
+      "title": "Talking Music",
+      "image_file_url": "https://c.sop.saavncdn.com/Talking-Music-20230310083848-500x500.jpg",
+      "partner_name": "Saavn OG",
+      "explicit_content": 0,
+      "latest_season_sequence": 3,
+      "square_image_url": "https://c.sop.saavncdn.com/Talking-Music-20230310083848-500x500.jpg",
+      "artists": [{ "artists_id": "2673255", "artists_name": "Kirthi Shetty", "artists_role": "Host" }],
+      "featured_artists": [],
+      "primary_artists": [{ "artists_id": "2673255", "artists_name": "Kirthi Shetty", "artists_role": "Host" }],
+      "perma_url": "https://www.jiosaavn.com/shows/talking-music/3/PjReFP-Sguk_",
+      "subtitle": "Kirthi Shetty"
+    },
+    {
+      "id": "110",
+      "type": "show",
+      "title": "Talking Music Punjabi",
+      "image_file_url": "https://c.sop.saavncdn.com/Talking-Music-Punjabi-20201208114446-500x500.jpg",
+      "partner_name": "Saavn OG",
+      "explicit_content": 0,
+      "latest_season_sequence": 3,
+      "square_image_url": "https://c.sop.saavncdn.com/Talking-Music-Punjabi-20201208114446-500x500.jpg",
+      "artists": [{ "artists_id": "5358756", "artists_name": "Sufi Ahuja", "artists_role": "Host" }],
+      "featured_artists": [],
+      "primary_artists": [{ "artists_id": "5358756", "artists_name": "Sufi Ahuja", "artists_role": "Host" }],
+      "perma_url": "https://www.jiosaavn.com/shows/talking-music-punjabi/3/6bKPYMJWvQs_",
+      "subtitle": "Sufi Ahuja"
+    }
+  ]
+}

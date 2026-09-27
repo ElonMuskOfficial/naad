@@ -20,6 +20,7 @@ export const searchFixture = fixture('search-results-kesariya.json');
 export const launchFixture = fixture('launch-data.json');
 export const browseFixture = fixture('browse-modules.json');
 export const showFixture = fixture('show-talking-music.json');
+export const showSearchFixture = fixture('search-shows-talking-music.json');
 
 /** A deterministic track: the search fixture's first song under another id. */
 export function makeTrack(id, title = `Track ${id}`) {
@@ -91,6 +92,8 @@ export function fakeUpstream() {
       case 'search.getArtistResults':
       case 'search.getPlaylistResults':
         return json({ total: 0, start: 1, results: [] });
+      case 'search.getMoreResults':
+        return json(showSearchFixture);
       case 'song.getDetails':
         return json({ songs: [searchFixture.results[0]] });
       case 'webapi.getLaunchData':
