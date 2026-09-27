@@ -9,11 +9,13 @@ export function isAllowedArtHost(hostname) {
   return ART_ALLOW_HOSTS.some((re) => re.test(hostname));
 }
 
-/** JioSaavn serves artwork at 50x50, 150x150 and 500x500; snap a requested size to the nearest of those. */
+/** JioSaavn serves artwork at 50x50, 150x150 and 500x500; snap a requested size to the nearest of those.
+ *  The 50x50 tile is never chosen — anything that would have landed there gets 150x150 instead, the next
+ *  size up. */
 export function applySizeTemplate(url, size) {
   if (!size || size <= 0) return url;
   if (url.includes('saavncdn.com') && /(\d+)x(\d+)/.test(url)) {
-    const s = size <= 50 ? 50 : size <= 150 ? 150 : 500;
+    const s = size <= 150 ? 150 : 500;
     return url.replace(/(\d+)x(\d+)/, `${s}x${s}`);
   }
   return url;

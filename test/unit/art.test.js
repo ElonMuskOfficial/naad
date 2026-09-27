@@ -18,10 +18,11 @@ describe('artwork proxy helpers', () => {
     }
   });
 
-  it('snaps a requested size to the ones JioSaavn serves', () => {
+  it('snaps a requested size to 150x150 or 500x500 — never the blurrier 50x50 tile', () => {
     const url = 'https://c.saavncdn.com/123/Brahmastra-Hindi-2022-500x500.jpg';
     assert.equal(applySizeTemplate(url, 150), 'https://c.saavncdn.com/123/Brahmastra-Hindi-2022-150x150.jpg');
-    assert.equal(applySizeTemplate(url, 40), 'https://c.saavncdn.com/123/Brahmastra-Hindi-2022-50x50.jpg');
+    // A request small enough to have landed on 50x50 gets the next size up instead.
+    assert.equal(applySizeTemplate(url, 40), 'https://c.saavncdn.com/123/Brahmastra-Hindi-2022-150x150.jpg');
     assert.equal(applySizeTemplate(url, 1000), url);
   });
 
