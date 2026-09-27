@@ -81,4 +81,16 @@ describe('cache', () => {
     await assert.rejects(cache.wrap('k', 60, async () => Promise.reject(new Error('boom'))));
     assert.equal(await cache.wrap('k', 60, async () => 'ok'), 'ok');
   });
+
+  it('lets ttlSec be a function of the resolved value', async () => {
+    const { redis, ttls } = fakeRedis();
+    const cache = createCache(redis);
+    const ttlSec = (value) => (value.ok ? 3600 : 30);
+    await cache.wrap('good', ttlSec, async () => ({ ok: true }));
+    await settle();
+    assert.equal(ttls.get('naad:good'), 3600);
+    await cache.wrap('bad', ttlSec, async () => ({ ok: false }));
+    await settle();
+    assert.equal(ttls.get('naad:bad'), 30);
+  });
 });
