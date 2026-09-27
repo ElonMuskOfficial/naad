@@ -15,6 +15,24 @@ describe("radio stations (JioSaavn's own curated catalog)", () => {
     assert.equal(stations[0].language, 'hindi');
   });
 
+  it('selects the language via a Cookie header, not the (upstream-ignored) query param', async (t) => {
+    const up = fakeUpstream();
+    const app = await build(t, { fetch: up.fetch });
+    await app.inject('/v1/stations?language=tamil');
+    const i = up.calls.lastIndexOf('content.getBrowseModules');
+    assert.ok(i !== -1);
+    assert.equal(up.headers[i]?.cookie, 'L=tamil; DL=tamil');
+  });
+
+  it('sends no language cookie when none is requested', async (t) => {
+    const up = fakeUpstream();
+    const app = await build(t, { fetch: up.fetch });
+    await app.inject('/v1/stations');
+    const i = up.calls.lastIndexOf('content.getBrowseModules');
+    assert.ok(i !== -1);
+    assert.equal(up.headers[i]?.cookie, undefined);
+  });
+
   it('starts a station and returns its id', async (t) => {
     const app = await build(t);
     const res = await app.inject({ method: 'POST', url: '/v1/stations', payload: { name: 'Desi Hip Hop' } });

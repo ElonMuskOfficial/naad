@@ -75,16 +75,18 @@ const json = (body, status = 200) =>
   });
 
 /**
- * Canned JioSaavn and LRCLIB. Records every JioSaavn `__call` in `calls`; unknown operations answer 404
- * and LRCLIB has no lyrics for anything.
+ * Canned JioSaavn and LRCLIB. Records every JioSaavn `__call` in `calls` (and its request headers, parallel
+ * by index, in `headers`); unknown operations answer 404 and LRCLIB has no lyrics for anything.
  */
 export function fakeUpstream() {
   const calls = [];
-  const fetchImpl = async (input) => {
+  const headers = [];
+  const fetchImpl = async (input, init) => {
     const url = new URL(String(input));
     if (url.hostname === 'lrclib.net') return url.pathname === '/api/get' ? json({}, 404) : json([]);
     const call = url.searchParams.get('__call') ?? '';
     calls.push(call);
+    headers.push(init?.headers ?? {});
     switch (call) {
       case 'search.getResults':
         return json(searchFixture);
@@ -110,7 +112,7 @@ export function fakeUpstream() {
         return json({}, 404);
     }
   };
-  return { fetch: fetchImpl, calls };
+  return { fetch: fetchImpl, calls, headers };
 }
 
 /** Builds the app with the given environment and upstream, and closes it when the test ends. */
