@@ -1,0 +1,99 @@
+{
+  "show_details": {
+    "id": "62",
+    "title": "Talking Music",
+    "subtitle": "Kirthi Shetty",
+    "header_desc": "",
+    "type": "show",
+    "perma_url": "https://www.jiosaavn.com/shows/talking-music/3/PjReFP-Sguk_",
+    "image": "https://c.sop.saavncdn.com/Talking-Music-20230310083831.jpg",
+    "language": "hindi",
+    "year": "2017",
+    "play_count": "",
+    "explicit_content": "0",
+    "more_info": {
+      "description": "Join Kirthi Shetty as he speaks to your favourite music stars on Talking Music.",
+      "season_number": "3",
+      "total_episodes": "41",
+      "artistMap": {
+        "primary_artists": [{ "id": "2673255", "name": "Kirthi Shetty", "role": "Host" }],
+        "featured_artists": [],
+        "artists": []
+      }
+    }
+  },
+  "seasons": [
+    {
+      "id": "1365",
+      "title": "Season 3",
+      "subtitle": "",
+      "type": "season",
+      "image": "https://c.sop.saavncdn.com/TM-S3-show39-jpg-20230310083925.jpg",
+      "perma_url": "https://www.jiosaavn.com/shows/talking-music/3/PjReFP-Sguk_",
+      "more_info": { "show_id": "62", "show_title": "Talking Music", "numEpisodes": "41", "season_number": "3" },
+      "explicit_content": "0",
+      "mini_obj": true
+    }
+  ],
+  "episodes": [
+    {
+      "id": "3zKcXONr",
+      "title": "Himesh Reshammiya",
+      "subtitle": "Kirthi Shetty, Himesh Reshammiya",
+      "header_desc": "Episode from Talking Music.",
+      "type": "episode",
+      "perma_url": "https://www.jiosaavn.com/shows/himesh-reshammiya/Kr8fmfSN4vo_",
+      "image": "https://c.sop.saavncdn.com/Talking-Music-Himesh-Reshammiya-Hindi-2021-20210622052655-150x150.jpg",
+      "language": "Hindi",
+      "year": "2023",
+      "explicit_content": "0",
+      "more_info": {
+        "release_date": "2023-03-17",
+        "duration": "1855",
+        "description": "In this episode, Kirthi caught up with Himesh Reshammiya.",
+        "season_no": "3",
+        "sequence_number": "1",
+        "show_id": "62",
+        "season_id": "1365",
+        "show_title": "Talking Music",
+        "season_title": "Season 3",
+        "artistMap": {
+          "primary_artists": [],
+          "featured_artists": [],
+          "artists": [
+            { "id": "2673255", "name": "Kirthi Shetty", "role": "Host" },
+            { "id": "455132", "name": "Himesh Reshammiya", "role": "Guest" }
+          ]
+        },
+        "episode_number": "1",
+        "encrypted_media_url": "ID2ieOjCrwftDyC7bmwt4dFhi50sf21cMI01kEins8rFMFoM0ZzUJp9h+JJiVuV7GBTsxqxbyf8="
+      }
+    },
+    {
+      "id": "6nRIuRNp",
+      "title": "Shankar - Ehsaan - Loy",
+      "subtitle": "Kirthi Shetty, Shankar Mahadevan, Ehsaan Noorani, Loy Mendonsa",
+      "header_desc": "Episode from Talking Music.",
+      "type": "episode",
+      "perma_url": "https://www.jiosaavn.com/shows/shankar-ehsaan-loy/5jNtugqtgsE_",
+      "image": "https://c.sop.saavncdn.com/Talking-Music-Shankar-Ehsaan-Loy-Hindi-2022-20220608080523-150x150.jpg",
+      "language": "Hindi",
+      "year": "2022",
+      "explicit_content": "0",
+      "more_info": {
+        "release_date": "2022-06-08",
+        "duration": "1440",
+        "description": "From Kal Ho Na Ho to Bunty aur Babli.",
+        "season_no": "3",
+        "sequence_number": "2",
+        "show_id": "62",
+        "season_id": "1365",
+        "show_title": "Talking Music",
+        "season_title": "Season 3",
+        "artistMap": { "primary_artists": [], "featured_artists": [], "artists": [] },
+        "episode_number": "2",
+        "encrypted_media_url": "ID2ieOjCrwftDyC7bmwt4dFhi50sf21cIxmJwsZTVFXFMFoM0ZzUJv8r7xzRnmAflextObK+yu02qtipKTHLLQ=="
+      }
+    }
+  ]
+}

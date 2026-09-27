@@ -34,6 +34,11 @@ Everything is `GET` unless noted.
 | `POST /v1/player/prefetch` `{ trackIds }` | Warms the audio lookups of upcoming queue items |
 | `/v1/tracks/{id}/lyrics` | Lyrics from LRCLIB, time-synced when available |
 | `/v1/radio?seed=track:{id}\|artist:{id}\|album:{id}\|playlist:{id}` | A radio queue |
+| `/v1/stations?language=` | JioSaavn's curated radio stations (mood/language/artist presets): `{ stations }` |
+| `POST /v1/stations` `{ name, language? }` | Starts a station by the `name` a listing gave you: `201 { stationId }` |
+| `/v1/stations/{id}/songs?limit=` | The next batch of tracks from a station |
+| `/v1/podcasts?language=` | JioSaavn's podcast/show catalog: `{ shows }` (each with a `token`, not its plain `id`) |
+| `/v1/podcasts/{token}?season=` | One show's details, seasons and episodes, by the `token` a listing gave you (episode audio is `/v1/tracks/{id}/audio`, unchanged) |
 | `/v1/art?src=&size=` | Artwork proxy (JioSaavn image hosts only) |
 | `/healthz` · `/readyz` | Liveness / readiness (Redis) |
 
@@ -78,6 +83,8 @@ lib/
     map.js                  raw response -> the API's shapes
     catalog.js              search, tracks, albums, artists, playlists
     discovery.js, home.js   home feed and radio
+    stations.js             JioSaavn's own curated radio stations (browse, start, next songs)
+    podcasts.js             JioSaavn's own podcast/show catalog (browse, one show's seasons and episodes)
     audio.js                song id -> audio URL (decrypts JioSaavn's encrypted_media_url); des.js is the DES cipher
   library/                  the persistent library: collections.js (likes, saved albums, followed artists),
                             playlists.js, history.js, snapshots.js; util.js has the shared Redis helpers

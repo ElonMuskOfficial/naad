@@ -4,10 +4,13 @@ import { Audio } from '../lib/jiosaavn/audio.js';
 import { Catalog } from '../lib/jiosaavn/catalog.js';
 import { JioSaavnClient } from '../lib/jiosaavn/client.js';
 import { Discovery } from '../lib/jiosaavn/discovery.js';
+import { Podcasts } from '../lib/jiosaavn/podcasts.js';
+import { Stations } from '../lib/jiosaavn/stations.js';
 import { LyricsService } from '../lib/lyrics.js';
 import { jsonClient } from '../lib/upstream.js';
 
-/** The business logic: everything JioSaavn (search, lookups, home, radio, audio) plus LRCLIB lyrics. */
+/** The business logic: everything JioSaavn (search, lookups, home, radio, stations, podcasts, audio) plus
+ *  LRCLIB lyrics. */
 export default fp(
   /**
    * @param {import('fastify').FastifyInstance} fastify
@@ -19,6 +22,8 @@ export default fp(
     const catalog = new Catalog(client, cache);
     fastify.decorate('catalog', catalog);
     fastify.decorate('discovery', new Discovery(catalog, client, cache));
+    fastify.decorate('stations', new Stations(client));
+    fastify.decorate('podcasts', new Podcasts(client));
     fastify.decorate('audio', new Audio(client, cache));
     fastify.decorate(
       'lyrics',

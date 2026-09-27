@@ -18,6 +18,8 @@ export const TEST_LIBRARY_REDIS_URL = process.env.TEST_LIBRARY_REDIS_URL ?? 'red
 const fixture = (name) => JSON.parse(readFileSync(join(here, 'fixtures', 'jiosaavn', name), 'utf8'));
 export const searchFixture = fixture('search-results-kesariya.json');
 export const launchFixture = fixture('launch-data.json');
+export const browseFixture = fixture('browse-modules.json');
+export const showFixture = fixture('show-talking-music.json');
 
 /** A deterministic track: the search fixture's first song under another id. */
 export function makeTrack(id, title = `Track ${id}`) {
@@ -93,6 +95,14 @@ export function fakeUpstream() {
         return json({ songs: [searchFixture.results[0]] });
       case 'webapi.getLaunchData':
         return json(launchFixture);
+      case 'content.getBrowseModules':
+        return json(browseFixture);
+      case 'webradio.createFeaturedStation':
+        return json({ stationid: 'S-fake-station-id' });
+      case 'webradio.getSong':
+        return json({ 0: { song: searchFixture.results[0] } });
+      case 'webapi.get':
+        return json(showFixture);
       default:
         return json({}, 404);
     }

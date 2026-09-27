@@ -1,0 +1,81 @@
+{
+  "radio": {
+    "featured_stations": [
+      {
+        "id": "Desi Hip Hop",
+        "title": "Desi Hip Hop",
+        "subtitle": "Hindi Radio",
+        "type": "radio_station",
+        "image": "https://c.saavncdn.com/editorial/DesiHipHop_saavn_radio_20210331122730_150x150.jpg",
+        "perma_url": "https://www.saavn.com/s/radio/hindi-featured-station/Desi-Hip-Hop",
+        "more_info": {
+          "description": "",
+          "featured_station_type": "featured",
+          "query": "",
+          "color": "#0743f5",
+          "language": "hindi",
+          "station_display_text": "Desi Hip Hop"
+        },
+        "explicit_content": "0",
+        "mini_obj": true
+      },
+      {
+        "id": "Workout Karo",
+        "title": "Workout Karo",
+        "subtitle": "Hindi Radio",
+        "type": "radio_station",
+        "image": "https://c.saavncdn.com/editorial/Workout_saavn_radio_20211129083042_150x150.jpg",
+        "perma_url": "https://www.saavn.com/s/radio/hindi-featured-station/Workout-Karo",
+        "more_info": {
+          "description": "",
+          "featured_station_type": "featured",
+          "query": "",
+          "color": "#000000",
+          "language": "hindi",
+          "station_display_text": "Workout Karo"
+        },
+        "explicit_content": "0",
+        "mini_obj": true
+      }
+    ]
+  },
+  "top_shows": {
+    "badge": "",
+    "shows": [
+      {
+        "id": "62",
+        "title": "Talking Music",
+        "subtitle": "",
+        "type": "show",
+        "image": "https://c.sop.saavncdn.com/Talking-Music-20230310083831.jpg",
+        "perma_url": "https://www.jiosaavn.com/shows/talking-music/3/PjReFP-Sguk_",
+        "more_info": {
+          "season_number": "3",
+          "release_date": "2021-06-22",
+          "year": "",
+          "badge": "",
+          "square_image": "https://c.sop.saavncdn.com/Talking-Music-20230310083848-500x500.jpg"
+        },
+        "explicit_content": "0",
+        "mini_obj": true
+      },
+      {
+        "id": "175427",
+        "title": "Such a Drag",
+        "subtitle": "",
+        "type": "show",
+        "image": "https://c.sop.saavncdn.com/Such-a-Drag-20220203145825.jpg",
+        "perma_url": "https://www.jiosaavn.com/shows/such-a-drag/1/VypzBimFtiI_",
+        "more_info": {
+          "season_number": "1",
+          "release_date": "2022-04-12",
+          "year": "",
+          "badge": "",
+          "square_image": "https://c.sop.saavncdn.com/Such-a-Drag-20220203145837-500x500.jpg"
+        },
+        "explicit_content": "1",
+        "mini_obj": true
+      }
+    ]
+  }
+}

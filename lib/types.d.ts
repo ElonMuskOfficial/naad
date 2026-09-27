@@ -5,6 +5,8 @@ import type { createCache } from './cache.js';
 import type { Audio } from './jiosaavn/audio.js';
 import type { Catalog } from './jiosaavn/catalog.js';
 import type { Discovery } from './jiosaavn/discovery.js';
+import type { Podcasts } from './jiosaavn/podcasts.js';
+import type { Stations } from './jiosaavn/stations.js';
 import type { Collections } from './library/collections.js';
 import type { History } from './library/history.js';
 import type { Playlists } from './library/playlists.js';
@@ -26,6 +28,8 @@ declare module 'fastify' {
     library: { collections: Collections; playlists: Playlists; history: History; snapshots: Snapshots };
     catalog: Catalog;
     discovery: Discovery;
+    stations: Stations;
+    podcasts: Podcasts;
     audio: Audio;
     lyrics: LyricsService;
   }
