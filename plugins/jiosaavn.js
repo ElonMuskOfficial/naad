@@ -9,7 +9,7 @@ import { Stations } from '../lib/jiosaavn/stations.js';
 import { LyricsService } from '../lib/lyrics.js';
 import { jsonClient } from '../lib/upstream.js';
 
-/** The business logic: everything JioSaavn (search, lookups, home, radio, stations, podcasts, audio) plus
+/** The business logic: everything JioSaavn (search, lookups, home, stations, podcasts, audio) plus
  *  LRCLIB lyrics. */
 export default fp(
   /**
@@ -21,7 +21,7 @@ export default fp(
     const client = new JioSaavnClient(jsonClient('jiosaavn', opts.fetch), cache);
     const catalog = new Catalog(client, cache);
     fastify.decorate('catalog', catalog);
-    fastify.decorate('discovery', new Discovery(catalog, client, cache));
+    fastify.decorate('discovery', new Discovery(client));
     fastify.decorate('stations', new Stations(client));
     fastify.decorate('podcasts', new Podcasts(client));
     fastify.decorate('audio', new Audio(client, cache));

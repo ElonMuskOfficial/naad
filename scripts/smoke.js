@@ -104,15 +104,6 @@ await check('podcast: browse, show, episode audio', async () => {
   assert(audioStatus === 200, `episode audio ${audioStatus}: ${audioBody.message ?? ''}`);
   return `${show.title} → ${episode.title} (${audioBody.bitrateKbps} kbps)`;
 });
-await check('radio diversity', async () => {
-  const t = await firstTrack('kesariya arijit singh');
-  const { body } = await get(`/v1/radio?seed=track:${t.id}&limit=25`);
-  const artists = new Set(body.tracks?.map((x) => x.artists[0]?.id));
-  assert(body.tracks?.length >= 20, `only ${body.tracks?.length} tracks`);
-  // A radio of one artist is the failure to catch; how many more there are depends on the seed and on live data.
-  assert(artists.size >= 5, `only ${artists.size} distinct artists`);
-  return `${body.tracks.length} tracks, ${artists.size} artists`;
-});
 await check('library round trip', async () => {
   const json = (method, body) => ({
     method,

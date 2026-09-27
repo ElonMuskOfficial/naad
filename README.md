@@ -33,7 +33,6 @@ Everything is `GET` unless noted.
 | `/v1/tracks/{id}/audio?quality=max\|320\|160\|96` | `{ url, bitrateKbps, codec, mimeType, durationMs }`: a static CDN URL, usable as `<audio src>` |
 | `POST /v1/player/prefetch` `{ trackIds }` | Warms the audio lookups of upcoming queue items |
 | `/v1/tracks/{id}/lyrics` | Lyrics from LRCLIB, time-synced when available |
-| `/v1/radio?seed=track:{id}\|artist:{id}\|album:{id}\|playlist:{id}` | A radio queue |
 | `/v1/stations?language=` | JioSaavn's curated radio stations (mood/language/artist presets): `{ stations }` |
 | `POST /v1/stations` `{ name, language? }` | Starts a station by the `name` a listing gave you: `201 { stationId }` |
 | `/v1/stations/{id}/songs?limit=` | The next batch of tracks from a station |
@@ -82,7 +81,7 @@ lib/
     client.js               the JioSaavn API calls (raw responses cached in Redis)
     map.js                  raw response -> the API's shapes
     catalog.js              search, tracks, albums, artists, playlists
-    discovery.js, home.js   home feed and radio
+    discovery.js, home.js   the home feed
     stations.js             JioSaavn's own curated radio stations (browse, start, next songs)
     podcasts.js             JioSaavn's own podcast/show catalog (browse, one show's seasons and episodes)
     audio.js                song id -> audio URL (decrypts JioSaavn's encrypted_media_url); des.js is the DES cipher

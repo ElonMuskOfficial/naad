@@ -2,7 +2,7 @@
   "name": "naad",
   "version": "1.0.0",
   "private": true,
-  "description": "NAAD — a caching proxy for JioSaavn: search, browse, audio links, home feed, radio and lyrics.",
+  "description": "NAAD — a caching proxy for JioSaavn: search, browse, audio links, home feed, radio stations, podcasts and lyrics.",
   "type": "module",
   "engines": {
     "node": ">=22.9"

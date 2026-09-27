@@ -13,13 +13,7 @@ describe('service basics', () => {
 
   it('bad input is a 400 in the standard Fastify error format', async (t) => {
     const app = await build(t);
-    for (const url of [
-      '/v1/search?q=',
-      '/v1/search',
-      '/v1/search?q=x&types=song',
-      '/v1/radio?seed=x',
-      '/v1/tracks/ab',
-    ]) {
+    for (const url of ['/v1/search?q=', '/v1/search', '/v1/search?q=x&types=song', '/v1/tracks/ab']) {
       const res = await app.inject(url);
       assert.equal(res.statusCode, 400, url);
       assert.equal(res.json().error, 'Bad Request');
@@ -35,6 +29,7 @@ describe('service basics', () => {
       '/v1/mixes',
       '/v1/resolve',
       '/v1/stream/abcdefghij',
+      '/v1/radio?seed=track:x',
       '/docs',
     ]) {
       assert.equal((await app.inject(url)).statusCode, 404, url);
