@@ -355,8 +355,12 @@ Per-item state inside Content:
   1. Download each icon's Android XML from fonts.google.com/icons.
   2. Put it in `res/drawable/`.
   3. Draw it with `Icon(painterResource(R.drawable.<name>), contentDescription = …)`.
-- **Toggles** (👍 liked, 🔖 saved, the selected bottom tab) swap between the outline and filled versions
-  of the same icon.
+- **Download settings** (fixed at download time, because Android vector files are not variable):
+  - **Rounded**, **weight 400**, **grade 0**, **optical size 24**, **fill 0**. These are Material
+    Symbols' defaults, per the Material Design 3 icon guidance (m3.material.io/styles/icons).
+  - Every icon uses these exact values so thickness and detail match across the app.
+- **Toggles** (👍 liked, 🔖 saved, the selected bottom tab) swap between two downloads of the same icon:
+  fill 0 (outline) and **fill 1** (filled), named e.g. `thumb_up` and `thumb_up_filled`.
 - **Icon list** (about 35):
 
   | Area | Icons |
