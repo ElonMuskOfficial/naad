@@ -4,7 +4,7 @@ import { Catalog } from '../../lib/jiosaavn/catalog.js';
 
 // When JioSaavn calls fail (timeout, network, ...), JioSaavnClient.search() still resolves with empty lists
 // (see lib/jiosaavn/client.js) but marks the result `failed`. The catalog must cache that outcome only briefly,
-// instead of treating it like a genuine "no results" for the usual hour-long TTL — and must never leak the
+// instead of treating it like a genuine "no results" for the usual 10-minute TTL — and must never leak the
 // `failed` marker into the response it hands back.
 function catalogWith(failed) {
   const jiosaavn = {
@@ -30,11 +30,11 @@ describe('search caching after an upstream failure', () => {
     assert.ok(ttl <= 60, `expected a short ttl for a failed search, got ${ttl}`);
   });
 
-  it('gives a genuinely empty (non-failed) search the normal hour-long ttl', async () => {
+  it('gives a genuinely empty (non-failed) search the normal 10-minute ttl', async () => {
     const { catalog, ttlFnOf } = catalogWith(false);
     const res = await catalog.search('anything', ['track'], 20, 0);
     const ttl = ttlFnOf()(res);
-    assert.equal(ttl, 3600);
+    assert.equal(ttl, 600);
   });
 
   it('never leaks the failed marker into the response (JSON or enumeration)', async () => {
