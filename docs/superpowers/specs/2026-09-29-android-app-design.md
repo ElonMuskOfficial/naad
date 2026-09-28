@@ -16,7 +16,7 @@ Rules the owner set, which every later decision must follow:
   clean approach.
 - No algorithms of our own (no recommendations, autoplay, "similar songs", or re-ranking).
 - Use YouTube Music's current Android layout (Sept 2026, from the owner's screenshots in
-  `YT-Music-android-SS/`) as the visual and interaction reference, but only for features our data can
+  `ytmusic-reference-screenshots/`) as the visual and interaction reference, but only for features our data can
   fill.
 - Official Android stack.
 
@@ -451,7 +451,7 @@ No UI or screenshot tests in v1.
 
 ## Appendix A: reference screenshots
 
-The owner's YouTube Music screenshots (Android, Sept 2026) are in `YT-Music-android-SS/`. They are named
+The owner's YouTube Music screenshots (Android, Sept 2026) are in `ytmusic-reference-screenshots/`. They are named
 `<area>-<nn>-<what it shows>.jpeg`. "Used for" names what we copy; everything else in a screenshot is
 out of scope (section 3).
 
