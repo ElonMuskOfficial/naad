@@ -346,6 +346,31 @@ Per-item state inside Content:
   `GET /v1/library/albums` (or `/artists`) and checks for the id, following `next` pages until it is
   found or the list ends. The owner chose this over adding backend endpoints.
 
+### 5.6 Icons
+
+- **Set:** Google's **Material Symbols**, **Rounded** style, used throughout. Official Android guidance
+  recommends Material Symbols over the legacy `material-icons` / `material-icons-extended` artifacts
+  (no longer maintained, older look, slower builds), so those artifacts are **not** used.
+- **How icons are added:**
+  1. Download each icon's Android XML from fonts.google.com/icons.
+  2. Put it in `res/drawable/`.
+  3. Draw it with `Icon(painterResource(R.drawable.<name>), contentDescription = …)`.
+- **Toggles** (👍 liked, 🔖 saved, the selected bottom tab) swap between the outline and filled versions
+  of the same icon.
+- **Icon list** (about 35):
+
+  | Area | Icons |
+  | --- | --- |
+  | Navigation | `home`, `search`, `library_music`, `history`, `settings`, `arrow_back`, `expand_more`, `more_vert`, `close`, `chevron_right` |
+  | Playback | `play_arrow`, `pause`, `skip_next`, `skip_previous`, `shuffle`, `repeat`, `repeat_one` |
+  | Library (outline + filled) | `thumb_up`, `bookmark` |
+  | Library | `add`, `person_add`, `check` |
+  | Queue | `playlist_add`, `playlist_play`, `queue_music`, `drag_handle`, `delete` |
+  | Other | `share`, `lyrics`, `album`, `person`, `radio`, `podcasts`, `wifi_off`, `error` |
+
+- **Launcher icon:** the owner's own logo, generated into all sizes with Android Studio's Image Asset
+  tool.
+
 ## 6. Player (Section 3)
 
 ### 6.1 Service
