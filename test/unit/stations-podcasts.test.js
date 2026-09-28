@@ -5,7 +5,10 @@ import { Stations } from '../../lib/jiosaavn/stations.js';
 import { browseFixture, showFixture } from '../helper.js';
 
 describe('Stations', () => {
-  it('browses the featured stations from a browseModules response', async () => {
+  it('browses the featured stations from a browseModules response, dropping id-less "artist radio" presets', async () => {
+    // browseFixture also carries two artist-radio presets (empty id, empty perma_url — JioSaavn's "resolve
+    // by artist name" entries) mixed into featured_stations. Left in, their shared empty id is a duplicate
+    // list key on the client and crashes its rendering.
     const stations = new Stations({ browseModules: async () => browseFixture });
     const list = await stations.browse('hindi');
     assert.deepEqual(

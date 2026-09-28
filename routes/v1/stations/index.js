@@ -9,7 +9,8 @@ const stations = async (fastify) => {
     async (req) => ({ stations: await fastify.stations.browse(req.query.language) }),
   );
 
-  /** Starts a station by the `name` a catalog entry gave you. */
+  /** Starts a station by `name` — a catalog entry's `id`, JioSaavn's own internal/romanized station name.
+   *  The catalog's `name` field is only the localized display title and won't resolve a station upstream. */
   fastify.post(
     '/',
     {

@@ -36,6 +36,42 @@
         },
         "explicit_content": "0",
         "mini_obj": true
+      },
+      {
+        "id": "",
+        "title": "Some Artist",
+        "subtitle": "Artist Radio",
+        "type": "radio_station",
+        "image": "https://c.saavncdn.com/artists/Some_Artist.jpg",
+        "perma_url": "",
+        "more_info": {
+          "description": null,
+          "featured_station_type": "artist",
+          "query": "Some Artist",
+          "color": null,
+          "language": "hindi",
+          "station_display_text": "Some Artist"
+        },
+        "explicit_content": "0",
+        "mini_obj": true
+      },
+      {
+        "id": "",
+        "title": "Another Artist",
+        "subtitle": "Artist Radio",
+        "type": "radio_station",
+        "image": "https://c.saavncdn.com/artists/Another_Artist.jpg",
+        "perma_url": "",
+        "more_info": {
+          "description": null,
+          "featured_station_type": "artist",
+          "query": "Another Artist",
+          "color": null,
+          "language": "hindi",
+          "station_display_text": "Another Artist"
+        },
+        "explicit_content": "0",
+        "mini_obj": true
       }
     ]
   },
