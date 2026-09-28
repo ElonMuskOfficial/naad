@@ -448,3 +448,33 @@ No UI or screenshot tests in v1.
 - **(a) Small backend fix.** `credits()` returns no id (null) for such artists, and the app hides "Go to
   artist" for them.
 - **(b) Accept it.** The app offers "Go to artist", and the Artist page shows the not-found state.
+
+## Appendix A: reference screenshots
+
+The owner's YouTube Music screenshots (Android, Sept 2026) are in `YT-Music-android-SS/`. They are named
+`<area>-<nn>-<what it shows>.jpeg`. "Used for" names what we copy; everything else in a screenshot is
+out of scope (section 3).
+
+| Spec section | Screenshots | Used for |
+| --- | --- | --- |
+| 4.1 App frame | any `home-*`, `library-*` | Bottom tabs and mini player (without Cast) |
+| 4.2 Home | `home-01`, `home-02`, `home-03`, `home-04` | Song-only section: 4 rows per column, swipe sideways, Play all |
+| 4.2 Home | `home-08`, `home-09` | Card carousels and their `Album • Artist` subtitles; artist shelf |
+| 4.2 Home | `home-05` to `home-07`, `home-10` to `home-12` | Reference only: mood chips, speed dial, podcast chip, featured card (all dropped) |
+| 4.3 Search | `search-01`, `search-02` | Empty screen with tiles (ours: Radio stations and Podcasts; no recents) |
+| 4.3 Search | `search-05`, `search-06`, `search-07` | Top result card, then results (ours are grouped by type) |
+| 4.3 Search | `search-08` to `search-12` | One chip selected (✕), single-type list |
+| 4.3 Search | `search-03`, `search-04` | Reference only: suggestions (dropped) |
+| 4.3 Radio / Podcasts pages | `browse-06`, `browse-07` | Page with a back arrow and a title, listing items |
+| 4.3 Radio / Podcasts pages | `browse-01` to `browse-05` | Reference only: New releases and Charts (no such endpoints) |
+| 4.4 Library | `library-02`, `library-03` | Playlists chip, pinned "Liked music" auto playlist, ＋ New button |
+| 4.4 Library | `library-01`, `library-04` | Reference only: Recent activity mix, Podcasts chip (dropped) |
+| 4.6 Album | `album-01`, `album-02`, `album-03` | Header, action row, numbered tracks, ▮▮ now playing, `N songs • M minutes` footer |
+| 4.6 Album | `album-04` | Album ⋮ menu (minus Start mix, Share, Pin) |
+| 4.7 Artist | `artist-01`, `artist-02`, `artist-03`, `artist-05` | Header, Top songs, Albums, Singles and EPs, Fans might also like |
+| 4.7 Artist | `artist-04` | Reference only: Featured on, Playlists by (no data) |
+| 4.10 Full player | `player-01`, `player-02` | Player layout; "Playing from" handle |
+| 4.10 Queue | `player-03` | Queue sheet (minus Save and Auto-play) |
+| 4.10 Lyrics | `lyrics-01` to `lyrics-04` | Lyrics sheet: highlighted current line (minus Share and Translate) |
+| 4.10 Related | `player-04` | Reference only: Related (no endpoint) |
+| 4.11 Song menu | `player-05` | Header with 👍, three big buttons, list (minus Start mix, Download, Credits) |
