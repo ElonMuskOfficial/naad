@@ -29,7 +29,7 @@ of scope.
 All `/v1` routes need `Authorization: Bearer <NAAD_API_KEY>`. Errors are `{ statusCode, error, message }`.
 
 | Feature | Endpoint | Notes that affect the app |
-|---|---|---|
+| --- | --- | --- |
 | Home | `GET /v1/home` returns `{ sections: [{ id, title, subtitle?, items: [{ kind, item }] }] }` | `kind` is `track`, `album`, `playlist` or `artist`, and one section may mix kinds. There is no language parameter and no "see more" endpoint. |
 | Search | `GET /v1/search?q&types&limit&offset` | Default types are track, album, artist, playlist; `show` is opt-in. `limit` ≤ 50, `offset` ≤ 200. Each type has its own list plus a `topResult` (offset 0 only). `nextOffset` is null when there are no more results. There is no combined ranking across types. |
 | Track | `GET /v1/tracks/{id}` | Includes `url` (the JioSaavn web link, used for Share). |
@@ -54,7 +54,7 @@ can be taken from the server directly), `/healthz` and `/readyz`.
 ## 3. Out of scope for v1
 
 | Feature | Why |
-|---|---|
+| --- | --- |
 | Autoplay, similar songs, song radio, artist radio, "Related", mixes | No endpoint; the owner rules out our own algorithms. |
 | Mood chips, speed dial, personalised shelves | No data. |
 | Search suggestions | No endpoint. |
@@ -157,9 +157,9 @@ Played songs, newest first, grouped under Today / Yesterday / date headings. Mor
   collapses it to the mini player.
 - **Top part:** ⌄ and ⋮; the artwork; title and artists; **👍** and **❝ Lyrics** buttons; a seek bar with
   times; and shuffle · previous · play/pause · next · repeat.
-- **Bottom handle:** reads "Playing from <source>". Tapping it or dragging it up opens the queue sheet.
+- **Bottom handle:** reads "Playing from `<source>`". Tapping it or dragging it up opens the queue sheet.
 - **Queue sheet:**
-  - "Playing from <source>" at the top.
+  - "Playing from `<source>`" at the top.
   - The current song is highlighted.
   - Each row shows artwork, title, artists and duration.
   - Drag ≡ to reorder, swipe a row sideways to remove it, tap a row to jump to it.
@@ -184,7 +184,7 @@ effect from the next song.
 ### 4.13 Gestures
 
 | Where | Gesture | Action |
-|---|---|---|
+| --- | --- | --- |
 | Mini player | tap or swipe up | Open full player |
 | Mini player | swipe left / right | Next / previous song |
 | Mini player | swipe down | Nothing (YouTube Music removed swipe-to-dismiss) |
@@ -233,7 +233,7 @@ Police, 9to5Google, XDA). YouTube publishes no official gesture reference.
 - A separate repository, created in Android Studio. This spec lives in the naad repo.
 - One `app` module, packaged by feature:
 
-```
+```text
 core/network/   NaadApi (Retrofit), JSON models, auth interceptor
 core/ui/        shared components: song row, cards, mini player, song menu, state views
 home/ search/ library/ history/ album/ artist/ playlist/ podcast/ radio/ player/ settings/
@@ -246,7 +246,7 @@ home/ search/ library/ history/ album/ artist/ playlist/ podcast/ radio/ player/
 
 ### 5.3 Layers
 
-```
+```text
 UI (Compose screens + one ViewModel each)
   → Repositories (one per area: catalog, library, playlists, history, stations, podcasts)
     → NaadApi (one suspend function per endpoint)
@@ -262,7 +262,7 @@ UI (Compose screens + one ViewModel each)
 Every screen's ViewModel exposes one state:
 
 | State | Shows |
-|---|---|
+| --- | --- |
 | Loading | Skeleton placeholders shaped like the content |
 | Content | The page, including the per-item states below |
 | Empty | A message, e.g. "Songs you 👍 will appear here", "No results for 'x'" |
