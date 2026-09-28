@@ -45,7 +45,15 @@ All `/v1` routes need `Authorization: Bearer <NAAD_API_KEY>`. Errors are `{ stat
 | Saved albums / followed artists | `GET /v1/library/albums`, `PUT/DELETE /v1/library/albums/{id}` (same shape for `artists`) | There is no `contains` endpoint (see 5.5). |
 | Playlists in library | `GET /v1/library/playlists`, `PUT/DELETE /v1/library/playlists/{id}` | Own playlists (`origin: user`) come first, then saved JioSaavn playlists. |
 | Own playlists | `POST /v1/playlists`, `PATCH/DELETE /v1/playlists/{id}`, `POST/DELETE /v1/playlists/{id}/items`, `POST …/items/{itemId}/move { afterItemId }` | Edits use `itemId`, not `trackId` (a playlist can hold the same song twice). At most 1000 tracks per playlist and 100 ids per request. |
-| History | `GET /v1/history?limit&cursor`, `POST /v1/history { listens }` | A listen is `{ trackId, startedAt, msPlayed, completed?, context? }`. |
+| History | `GET /v1/history?limit&cursor`, `POST /v1/history { listens }` | A listen is `{ trackId, startedAt, msPlayed, completed?, context? }`. `context.id` must be ≤ 64 characters, or the whole request is rejected (see 6.3). |
+
+**Paging:** every library list (`/library/tracks`, `/albums`, `/artists`) and `/history` returns at most
+one page (≤ 500 items) plus a `next` cursor. The app follows `next` for as long as it is not null. It never
+assumes one page is the whole list.
+
+**CDN access, checked 2026-09-29:** a JioSaavn audio URL (from an old test fixture) and an image URL both
+answer normally to ExoPlayer, OkHttp and empty User-Agents. Audio returns `206` for range requests, so
+seeking works. The fixture's audio URL still works, so URLs do not expire quickly.
 
 Unused on purpose: `/v1/art` (it exists only because browsers block cross-site images; Android loads
 CDN images directly), `DELETE /v1/cache` (a server admin action), `GET /v1/library/export` (backups
@@ -104,6 +112,10 @@ The layout follows the owner's YouTube Music screenshots, filtered to our data.
 - The chips are Songs · Albums · Artists · Playlists · Podcasts. Selecting one (marked ✕) shows only
   that type as a long list with "Load more" (driven by `nextOffset`, and stopping at the API's offset
   limit).
+- Exact `types` values:
+  - no chip: `types=track,album,artist,playlist,show` (`show` must be listed explicitly because it is
+    opt-in)
+  - chips: `track`, `album`, `artist`, `playlist`, `show`
 - The **Radio stations page** is a grid of `GET /v1/stations`. Tapping a station starts it (see 6.4).
 - The **Podcasts page** is a grid of `GET /v1/podcasts`. Tapping a show opens it.
 
@@ -174,6 +186,12 @@ Played songs, newest first, grouped under Today / Yesterday / date headings. Mor
 - Three big buttons: **Play next · Save to playlist · Share**.
 - Then a list: Add to queue · Go to album · Go to artist.
 - Context adds **Remove from playlist** in own playlists.
+- **Go to album** is hidden when `track.album` is null (always the case for podcast episodes).
+- **Go to artist** opens the artist directly when there is one artist. With several, it opens a
+  small sheet listing them, as YouTube Music does.
+- **Artists without a real id:** the backend's `credits()` (`lib/jiosaavn/map.js`) falls back to the
+  artist's *name* as `id` when JioSaavn gives no id, and `/v1/artists/{name}` returns 404. See the open
+  decision in 8.
 - Save to playlist opens a sheet: ＋ New playlist, then your playlists.
 
 ### 4.12 Settings
@@ -181,7 +199,23 @@ Played songs, newest first, grouped under Today / Yesterday / date headings. Mor
 One setting: streaming quality, **Max · 160 · 96 kbps**. It maps to the `quality` parameter and takes
 effect from the next song.
 
-### 4.13 Gestures
+### 4.13 What "Play" puts in the queue
+
+There is no autoplay, so the queue is exactly what you started. The single rule: **the songs of the list
+the tapped row is in, in the order shown, starting at the tapped song.** Per source:
+
+| Source | Queue |
+| --- | --- |
+| Album, playlist, Liked music | All its songs (every page of Liked music). ▶ starts at the first song, and Shuffle turns on shuffle. |
+| Artist page | All 20 top songs (even though the page shows 4). |
+| Home section | The song items of that section, in order. Albums, playlists and artists in a mixed section are skipped. |
+| Search results | The song results currently loaded in that list. The Top result card plays only its one song. |
+| History | The loaded history rows. |
+| Podcast show | The episodes of the selected season, in order. |
+| Radio station | Batches from the station (see 6.4). |
+| ⋮ Play next / Add to queue | That one song. On the album and playlist ⋮, all of its songs. |
+
+### 4.14 Gestures
 
 | Where | Gesture | Action |
 | --- | --- | --- |
@@ -268,6 +302,7 @@ Every screen's ViewModel exposes one state:
 | Empty | A message, e.g. "Songs you 👍 will appear here", "No results for 'x'" |
 | Error: offline | "You're offline" and Retry |
 | Error: server | "Something went wrong" and Retry |
+| Error: not found (404) | "This isn't available" and Back (no Retry, since retrying cannot help) |
 | Error: API key (401) | "The API key was rejected. Check local.properties." (no Retry) |
 
 Refreshing keeps the current content visible until new data arrives.
@@ -290,8 +325,8 @@ Per-item state inside Content:
   menu opens. Song lists do not show likes, which matches YouTube Music.
 - **JioSaavn playlist saved:** the `inLibrary` field of the playlist response.
 - **Album saved / artist followed:** the API has no `contains` for these. Opening the page also loads
-  `GET /v1/library/albums` (or `/artists`) and checks for the id. The owner chose this over adding
-  backend endpoints.
+  `GET /v1/library/albums` (or `/artists`) and checks for the id, following `next` pages until it is
+  found or the list ends. The owner chose this over adding backend endpoints.
 
 ## 6. Player (Section 3)
 
@@ -321,6 +356,15 @@ Per-item state inside Content:
 - Play next, Add to queue, move, remove, shuffle and repeat are all Media3's own Player operations.
 - The queue remembers its source (`{ type, id, title }`, e.g. album, playlist, station, search, home).
   The source is shown as "Playing from …" and sent as the listen `context`.
+- The listen `context` is sent as follows:
+  - For album, playlist, artist and show sources: `{ type, id }` (these ids fit the backend's 64-char
+    limit).
+  - For station, search, home, history and liked: `{ type }` only, because a station id or search text
+    can exceed the limit and would make the backend reject the listen.
+  - `title` is for display only and is never sent.
+- Items added through the `MediaController` carry only `mediaId` and metadata. The session builds each
+  item's playable (resolvable) URI in `MediaSession.Callback.onAddMediaItems`, because Media3 does not
+  trust a controller-supplied URI.
 
 ### 6.4 Radio
 
@@ -363,7 +407,7 @@ No UI or screenshot tests in v1.
 
 - **Playback:** plays with the screen off; notification and lock-screen controls work; Bluetooth or
   headset buttons work; unplugging headphones pauses; a phone call pauses, then resumes.
-- **Gestures:** every gesture in 4.13, including the ⚠ ones.
+- **Gestures:** every gesture in 4.14, including the ⚠ ones.
 - **Page states:** every screen with Wi-Fi off, and with a wrong API key.
 - **Features:**
   - radio plays past its first 20 songs
@@ -397,4 +441,10 @@ No UI or screenshot tests in v1.
   Retrofit, Coil and Reorderable.
 - That Media3's playback notification needs no `POST_NOTIFICATIONS` runtime prompt on Android 13+
   (media-session notifications are believed to be exempt).
-- The two ⚠ gestures in 4.13, on the owner's phone.
+- The two ⚠ gestures in 4.14, on the owner's phone.
+
+**Open decision (owner):** artists whose `id` is really their name (see 4.11). Options:
+
+- **(a) Small backend fix.** `credits()` returns no id (null) for such artists, and the app hides "Go to
+  artist" for them.
+- **(b) Accept it.** The app offers "Go to artist", and the Artist page shows the not-found state.
