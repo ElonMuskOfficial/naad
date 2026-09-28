@@ -196,8 +196,26 @@ Played songs, newest first, grouped under Today / Yesterday / date headings. Mor
 
 ### 4.12 Settings
 
-One setting: streaming quality, **Max · 160 · 96 kbps**. It maps to the `quality` parameter and takes
-effect from the next song.
+- The ⚙ icon opens **Settings** directly. There is no account menu and no Activity (notifications)
+  feed, because there are no accounts and no notification data.
+- Settings is a simple list page, like YouTube Music's (`settings-01`). It has one row: **Audio
+  quality**, whose subtitle shows the current value.
+- Tapping the row opens a radio dialog, like `settings-05`:
+
+  | Option | `quality` sent |
+  | --- | --- |
+  | Low | `96` |
+  | Normal | `160` |
+  | High | `max` (320 kbps when the song has it, otherwise 160) |
+
+  The default is **High**. A change takes effect from the next song.
+- **Dropped** from YouTube Music's settings pages:
+  - Equaliser
+  - Double-tap to seek (a video feature)
+  - Consistent volume (no loudness data)
+  - Dynamic queue (an algorithm)
+  - Allow external devices to start playback (needs queue restore, which is out of scope)
+  - Every download, account, family, privacy and premium page
 
 ### 4.13 What "Play" puts in the queue
 
@@ -478,3 +496,5 @@ out of scope (section 3).
 | 4.10 Lyrics | `lyrics-01` to `lyrics-04` | Lyrics sheet: highlighted current line (minus Share and Translate) |
 | 4.10 Related | `player-04` | Reference only: Related (no endpoint) |
 | 4.11 Song menu | `player-05` | Header with 👍, three big buttons, list (minus Start mix, Download, Credits) |
+| 4.12 Settings | `settings-01`, `settings-05` | List page; Audio quality radio dialog (Low / Normal / High) |
+| 4.12 Settings | `settings-02` to `settings-04`, `account-01`, `account-02` | Reference only: General, Playback, Downloads pages, Account menu, Activity feed (dropped) |
