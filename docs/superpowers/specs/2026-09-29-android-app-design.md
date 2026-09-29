@@ -518,9 +518,11 @@ No UI or screenshot tests in v1.
 
 ## Appendix A: reference screenshots
 
-The owner's YouTube Music screenshots (Android, Sept 2026) are in `ytmusic-reference-screenshots/`. They are named
+The owner's YouTube Music screenshots (Android, Sept 2026) are in `ytmusic-reference-screenshots/`,
+**local only, not committed** (owner's choice — it is git-ignored). They are named
 `<area>-<nn>-<what it shows>.jpeg`. "Used for" names what we copy; everything else in a screenshot is
-out of scope (section 3).
+out of scope (section 3). This table and the design decisions above remain the durable record; the
+images themselves may not be present in every checkout.
 
 | Spec section | Screenshots | Used for |
 | --- | --- | --- |

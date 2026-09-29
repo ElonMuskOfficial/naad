@@ -5,3 +5,6 @@ node_modules/
 var/
 coverage/
 *.log
+
+# Local-only reference material for the Android app design (not committed, per owner's choice)
+/ytmusic-reference-screenshots/
