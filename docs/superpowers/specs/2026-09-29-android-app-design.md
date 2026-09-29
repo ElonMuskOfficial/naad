@@ -187,11 +187,12 @@ Played songs, newest first, grouped under Today / Yesterday / date headings. Mor
 - Then a list: Add to queue · Go to album · Go to artist.
 - Context adds **Remove from playlist** in own playlists.
 - **Go to album** is hidden when `track.album` is null (always the case for podcast episodes).
-- **Go to artist** opens the artist directly when there is one artist. With several, it opens a
-  small sheet listing them, as YouTube Music does.
-- **Artists without a real id:** the backend's `credits()` (`lib/jiosaavn/map.js`) falls back to the
-  artist's *name* as `id` when JioSaavn gives no id, and `/v1/artists/{name}` returns 404. See the open
-  decision in 8.
+- **Go to artist** opens the artist directly when there is one artist with a non-null `id`. With
+  several such artists, it opens a small sheet listing them, as YouTube Music does. An artist credit
+  whose `id` is `null` is shown (its `name` still renders) but offers no "Go to artist" action — the
+  backend's `credits()` (`lib/jiosaavn/map.js`, fixed in commit `c839ac4`) now returns `id: null` rather
+  than fabricating an id from the name, so the app never calls `/v1/artists/{id}` with something that
+  isn't a real id.
 - Save to playlist opens a sheet: ＋ New playlist, then your playlists.
 
 ### 4.12 Settings
@@ -510,11 +511,8 @@ No UI or screenshot tests in v1.
   (media-session notifications are believed to be exempt).
 - The two ⚠ gestures in 4.14, on the owner's phone.
 
-**Open decision (owner):** artists whose `id` is really their name (see 4.11). Options:
-
-- **(a) Small backend fix.** `credits()` returns no id (null) for such artists, and the app hides "Go to
-  artist" for them.
-- **(b) Accept it.** The app offers "Go to artist", and the Artist page shows the not-found state.
+**Resolved:** artists whose `id` was really their name (4.11). Owner chose option (a): the backend
+(commit `c839ac4`) now returns `id: null` instead, and the app hides "Go to artist" for those credits.
 
 ## Appendix A: reference screenshots
 
