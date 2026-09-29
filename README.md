@@ -68,7 +68,10 @@ without upstream calls.
 `GET /v1/playlists/{id}` serves your own playlists (with `entries: [{ itemId, addedAt }]` parallel to `tracks`) and
 JioSaavn ones (with `origin` and `inLibrary`). A playlist holds at most 1000 tracks.
 
-Ids are JioSaavn's own ids. Errors are the Fastify default: `{ statusCode, error, message }`.
+Ids are JioSaavn's own ids. A track's, album's or episode's `artists[]` entries can have `id: null` when
+JioSaavn gives no real artist id for that credit (rare); that credit's `name` is still shown, but it can't
+be looked up with `GET /v1/artists/{id}` — a client should hide any "go to artist" action when `id` is
+`null`. Errors are the Fastify default: `{ statusCode, error, message }`.
 
 ## How it works
 
