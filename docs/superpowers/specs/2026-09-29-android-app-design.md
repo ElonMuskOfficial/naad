@@ -282,7 +282,21 @@ Police, 9to5Google, XDA). YouTube publishes no official gesture reference.
 
 ### 5.2 Project
 
-- A separate repository, created in Android Studio. This spec lives in the naad repo.
+- A separate repository, created in Android Studio from the **Empty Activity** (Compose) template at
+  `D:\Dev\Projects\music\naad-android` (git, branch `main`; the untouched template is the first commit).
+  This spec lives in the naad repo.
+- The project as generated:
+
+  | Setting | Value |
+  | --- | --- |
+  | App name (launcher label) | `Naad` |
+  | Package / `applicationId` | `com.thethinkers.naad` |
+  | Build scripts | Kotlin DSL with a version catalog (`gradle/libs.versions.toml`) |
+  | Build tools | AGP 9.4.1, Gradle 9.6.0 |
+  | SDK levels | compile and target SDK 37, min SDK 26 |
+
+- The template pins some old library versions. The first plan step updates every version to its
+  verified current release.
 - One `app` module, packaged by feature:
 
 ```text
@@ -291,10 +305,16 @@ core/ui/        shared components: song row, cards, mini player, song menu, stat
 home/ search/ library/ history/ album/ artist/ playlist/ podcast/ radio/ player/ settings/
 ```
 
-- The server URL and API key are read from a git-ignored `local.properties` into `BuildConfig`. One
-  OkHttp interceptor adds `Authorization: Bearer <key>`.
-- Minimum SDK is Android 8.0 (API 26). Target and compile SDK are the newest stable release (the
-  exact numbers are confirmed in the implementation plan).
+- **Secrets:** the server URL and API key live in a separate git-ignored **`secrets.properties`** in the
+  project root, not in `local.properties`. Android Studio owns `local.properties` and warns that it
+  erases changes to it.
+- **BuildConfig:** the build reads `secrets.properties` into `BuildConfig`, which requires
+  `buildFeatures.buildConfig = true`, because AGP no longer generates `BuildConfig` by default.
+- **Auth header:** one OkHttp interceptor adds `Authorization: Bearer <key>` to every request.
+- **Theme:** **always dark**, like the YouTube Music reference. There is a single dark color scheme, no
+  light theme and no dynamic (wallpaper) colors; the template's light and dynamic branches are
+  removed.
+- **Launch theme:** the launch window theme is dark too, so there is no white flash at startup.
 
 ### 5.3 Layers
 
@@ -321,7 +341,7 @@ Every screen's ViewModel exposes one state:
 | Error: offline | "You're offline" and Retry |
 | Error: server | "Something went wrong" and Retry |
 | Error: not found (404) | "This isn't available" and Back (no Retry, since retrying cannot help) |
-| Error: API key (401) | "The API key was rejected. Check local.properties." (no Retry) |
+| Error: API key (401) | "The API key was rejected. Check secrets.properties." (no Retry) |
 
 Refreshing keeps the current content visible until new data arrives.
 
