@@ -101,6 +101,10 @@ lib/
   lyrics are cached for 30 days (a song without lyrics for 7 days).
 * **Audio.** JioSaavn gives each song an encrypted URL. It is decrypted (single DES) into the 96 kbps file's
   URL, and the 160 / 320 kbps files share the same path with a different suffix.
+* **Listener location.** JioSaavn localizes search and browse by the caller's location: outside India some
+  songs are missing from search even though their pages and audio work. naad therefore sends each listener's
+  public IP to JioSaavn as `X-Forwarded-For` (`lib/client-ip.js`), so a server anywhere gets the listener's
+  results. Behind a proxy this needs `TRUST_PROXY=true`; local and private callers forward nothing.
 * **The API is a mirror, not a merge.** Search results are re-ranked so the plain song beats remixes and
   namesakes; everything else is JioSaavn's data, cleaned (HTML entities decoded, images at three sizes).
 

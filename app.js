@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import AutoLoad from '@fastify/autoload';
 
-// Passed to the Fastify constructor by `fastify start`.
+// Passed to the Fastify constructor by `fastify start -o` (without -o, fastify-cli ignores this export).
 export const options = {
   trustProxy: process.env.TRUST_PROXY === 'true',
 };

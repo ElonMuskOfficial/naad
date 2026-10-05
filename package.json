@@ -8,8 +8,8 @@
     "node": ">=22.9"
   },
   "scripts": {
-    "dev": "node --env-file-if-exists=.env node_modules/fastify-cli/cli.js start -w -l info -P app.js",
-    "start": "node --env-file-if-exists=.env node_modules/fastify-cli/cli.js start -a 0.0.0.0 -l info app.js",
+    "dev": "node --env-file-if-exists=.env node_modules/fastify-cli/cli.js start -w -o -l info -P app.js",
+    "start": "node --env-file-if-exists=.env node_modules/fastify-cli/cli.js start -o -a 0.0.0.0 -l info app.js",
     "typecheck": "tsc -p jsconfig.json",
     "lint": "biome check .",
     "format": "biome check --write .",
