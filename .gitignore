@@ -1,6 +1,4 @@
 node_modules/
-.env
-.env.*
 !.env.example
 var/
 coverage/
@@ -11,3 +9,4 @@ temp_interactive_push.bat
 
 # Local-only reference material for the Android app design (not committed, per owner's choice)
 /ytmusic-reference-screenshots/
+config.bat
