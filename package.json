@@ -2,14 +2,14 @@
   "name": "naad",
   "version": "1.0.0",
   "private": true,
-  "description": "NAAD — a caching proxy for JioSaavn: search, browse, audio links, home feed, radio stations, podcasts and lyrics.",
+  "description": "NAAD \u2014 a caching proxy for JioSaavn: search, browse, audio links, home feed, radio stations, podcasts and lyrics.",
   "type": "module",
   "engines": {
     "node": ">=22.9"
   },
   "scripts": {
-    "dev": "node --env-file-if-exists=.env node_modules/fastify-cli/cli.js start -w -l info -P app.js",
-    "start": "node --env-file-if-exists=.env node_modules/fastify-cli/cli.js start -a 0.0.0.0 -l info app.js",
+    "dev": "node api.js && node --env-file-if-exists=.env node_modules/fastify-cli/cli.js start -w -o -l info -P app.js",
+    "start": "node api.js && node --env-file-if-exists=.env node_modules/fastify-cli/cli.js start -o -a 0.0.0.0 -l info app.js",
     "typecheck": "tsc -p jsconfig.json",
     "lint": "biome check .",
     "format": "biome check --write .",

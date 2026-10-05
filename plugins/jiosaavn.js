@@ -1,5 +1,6 @@
 import fp from 'fastify-plugin';
 
+import { runWithClientIp } from '../lib/client-ip.js';
 import { Audio } from '../lib/jiosaavn/audio.js';
 import { Catalog } from '../lib/jiosaavn/catalog.js';
 import { JioSaavnClient } from '../lib/jiosaavn/client.js';
@@ -18,6 +19,10 @@ export default fp(
    */
   async (fastify, opts) => {
     const { cache } = fastify;
+    // Every JioSaavn call made while serving a request is made on behalf of that request's listener.
+    fastify.addHook('onRequest', (req, _reply, done) => {
+      runWithClientIp(req.ip, done);
+    });
     const client = new JioSaavnClient(jsonClient('jiosaavn', opts.fetch), cache);
     const catalog = new Catalog(client, cache);
     fastify.decorate('catalog', catalog);
